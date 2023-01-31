@@ -2,22 +2,20 @@ import { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
+import { apiFetching } from "./services/characters";
+
 function App() {
 
-
-  const [data, setData] = useState();
-
-  const apiFetching = async () => {
-    const response = await fetch(urlApi);
-    const responsed = await response.json();
-    setData(responsed);
-  };
+  const [endpoints, setEndpoints] = useState();
 
   useEffect(() => {
-    apiFetching();
-  }, []);
+    const fetch = async () => {
+      setEndpoints(await apiFetching());
+    }
+    fetch();
+    }, []);
 
-  console.log("DATA STATE SAVED =>", data);
+  console.log("DATA STATE SAVED =>", endpoints);
 
   return (
     <div className="App">
@@ -32,10 +30,10 @@ function App() {
           I'm gonna use data which is declared with use State hook, and where is
           located the data fetched of rick and morty api. And i'm going to
           render it: </p>
-        {data ? (
+        {endpoints ? (
           <>
           <h3>To access to the characters use the link down below: </h3>
-            <p>{data.characters}</p>
+            <p>{endpoints.characters}</p>
           </>
         ) : null}
         <a
